@@ -1,0 +1,24 @@
+# CodeIgniter 4 specific
+.env
+.env.*
+!.env.example
+writable/
+vendor/
+phpunit.xml
+tests/_support/
+.phpunit.result.cache
+
+# IDE specific
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 
