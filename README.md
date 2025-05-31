@@ -1,6 +1,6 @@
 # Library Books Management System
 
-A modern and efficient Library Books Management System built with CodeIgniter 4, Docker, and MySQL. This application provides a complete solution for managing library books, including CRUD operations, form validation, and a responsive user interface.
+A modern and efficient Library Books Management System built with CodeIgniter 4 and MySQL. This application provides a complete solution for managing library books, including CRUD operations, form validation, and a responsive user interface.
 
 ## 🚀 Features
 
@@ -12,15 +12,15 @@ A modern and efficient Library Books Management System built with CodeIgniter 4,
 
 - **Technical Features**
   - Built with CodeIgniter 4 framework
-  - Docker containerization for easy deployment
   - MySQL database for reliable data storage
   - Clean and intuitive user interface
 
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
-- Docker
-- Docker Compose
+- PHP 7.4 or higher
+- XAMPP (includes Apache and MySQL)
+- Composer (PHP package manager)
 - Git
 
 ## 🛠️ Installation
@@ -31,18 +31,38 @@ Before you begin, ensure you have the following installed:
    cd Library-Books-Management
    ```
 
-2. Start the application using Docker Compose:
+2. Install dependencies using Composer:
    ```bash
-   docker-compose up --build
+   composer install
    ```
 
-3. Access the application:
-   - Web Interface: http://localhost:8080
-   - Database: MySQL running on port 3306
+3. Configure your database:
+   - Open XAMPP Control Panel and start Apache and MySQL services
+   - Open phpMyAdmin (http://localhost/phpmyadmin)
+   - Create a new database named `library_management`
+   - Import the database schema (if provided)
+
+4. Configure the application:
+   - Copy `env` file to `.env`
+   - Update the database configuration in `.env`:
+     ```
+     database.default.hostname = localhost
+     database.default.database = library_management
+     database.default.username = root
+     database.default.password = 
+     database.default.DBDriver = MySQLi
+     ```
+
+5. Access the application:
+   - Place the project in your XAMPP's htdocs directory
+   - Access via: http://localhost/Library-Books-Management/public
 
 ## 🗄️ Database Setup
 
-The application automatically creates the required database tables on first run. No manual database setup is required.
+The application uses MySQL database. Make sure to:
+1. Create the database in phpMyAdmin
+2. Configure the database connection in `.env` file
+3. The application will automatically create the required tables on first run
 
 ## 🏗️ Project Structure
 
@@ -52,9 +72,8 @@ Library-Books-Management/
 │   ├── Controllers/
 │   ├── Models/
 │   └── Views/
-├── docker/
 ├── public/
-└── docker-compose.yml
+└── .env
 ```
 
 ## 🤝 Contributing
@@ -72,5 +91,5 @@ This project is open-source and available under the MIT License.
 ## 🙏 Acknowledgments
 
 - CodeIgniter 4 Framework
-- Docker Community
+- XAMPP Development Environment
 - MySQL Team
