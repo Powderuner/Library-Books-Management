@@ -51,9 +51,14 @@ A modern web application for managing library book collections. Built with CodeI
 4. **Configure environment**
    ```bash
    # Copy environment file
-   cp env .env
+   cp .env.example .env
    
-   # Edit .env with your database details
+   # Edit .env with your details:
+   # - Add your Google Books API key
+   # - Configure database settings
+   
+   # Example .env content:
+   GOOGLE_BOOKS_API_KEY=your_actual_api_key_here
    database.default.hostname = 127.0.0.1
    database.default.database = library_db
    database.default.username = root

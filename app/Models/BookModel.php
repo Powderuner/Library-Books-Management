@@ -121,7 +121,7 @@ class BookModel extends Model
         // Log the original and cleaned ISBN for debugging
         log_message('info', "ISBN Lookup - Original: {$isbn}, Cleaned: {$cleanIsbn}");
         
-        $apiKey = 'AIzaSyDz1l8t5ns08jci9GcunMFxAi1TGuDdjCI';
+        $apiKey = env('GOOGLE_BOOKS_API_KEY');
         
         // Try both with and without hyphens for better API results
         $urls = [
