@@ -102,14 +102,4 @@ Library-Books-Management/
 - **Local Development**: http://localhost:8080
 - **Production**: Configure your web server to point to the `public/` directory
 
-## 🤝 Contributing
 
-Pull requests welcome! Please ensure code follows existing style and includes tests.
-
-## 📄 License
-
-MIT License - see LICENSE file for details.
-
----
-
-**Built with ❤️ using CodeIgniter 4**
