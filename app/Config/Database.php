@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
     'DSN'          => '',
-    'hostname'     => '127.0.0.1', // Use IP instead of localhost to avoid socket issues
-    'username'     => 'root', // Default phpMyAdmin username
-    'password'     => '', // Default phpMyAdmin password (usually empty)
-    'database'     => 'library_db', // Your database name
+    'hostname'     => 'db', // Matches the service name in docker-compose.yml
+    'username'     => 'user', // From your docker-compose.yml
+    'password'     => 'password', // From your docker-compose.yml
+    'database'     => 'library_db', // From your docker-compose.yml
     'DBDriver'     => 'MySQLi',
     'DBPrefix'     => '',
     'pConnect'     => false,
