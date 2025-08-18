@@ -2,6 +2,8 @@
 
 A modern web application for managing library book collections. Built with CodeIgniter 4, it features a clean interface for adding, organizing, and tracking books with support for ISBN lookup via Google Books API.
 
+![Project Overview](Project%20GIF.gif)
+
 ## ✨ Key Features
 
 - **Book Management**: Add, edit, delete, and organize books

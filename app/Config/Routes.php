@@ -15,6 +15,7 @@ $routes->post('/books/store', 'Books::store');
 $routes->get('/books/edit/(:num)', 'Books::edit/$1');
 $routes->put('/books/update/(:num)', 'Books::update/$1');
 $routes->delete('/books/delete/(:num)', 'Books::delete/$1');
+$routes->post('/books/delete/(:num)', 'Books::delete/$1');
 
 // ISBN Lookup Routes
 $routes->get('/books/lookup-isbn', 'Books::lookupISBN');

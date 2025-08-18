@@ -148,29 +148,7 @@ function getGenreColor($genre) {
         </div>
     </div>
 <?php else: ?>
-    <!-- Results Summary -->
-    <div class="mb-3 results-summary">
-        <small class="text-muted">
-            <i class="fas fa-info-circle me-1"></i>
-            Showing <?= count($books) ?> book<?= count($books) !== 1 ? 's' : '' ?>
-            <?php if ($currentGenre !== 'all'): ?>
-                in "<?= esc($currentGenre) ?>" genre
-            <?php endif; ?>
-            sorted by <?= 
-                $currentSortBy === 'title' ? 'book title' : 
-                ($currentSortBy === 'publication_year' ? 'publication year' : 'date added')
-            ?> 
-            (<?= $currentSortOrder === 'asc' ? 'A-Z' : 'Z-A' ?>)
-        </small>
-        <small class="text-muted d-block mt-1">
-            <i class="fas fa-shield-alt me-1"></i>
-            Duplicate protection is active - you cannot add the same book twice
-        </small>
-        <small class="text-muted d-block mt-1">
-            <i class="fas fa-mouse-pointer me-1"></i>
-            <strong>Tip:</strong> Click on any book row to view detailed information
-        </small>
-    </div>
+
 
     <!-- Books Table -->
     <div class="card">
@@ -200,8 +178,8 @@ function getGenreColor($genre) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($books as $book): ?>
-                        <tr class="book-row" onclick="showBookDetails(<?= htmlspecialchars(json_encode($book), ENT_QUOTES, 'UTF-8') ?>)" style="cursor: pointer;">
+                        <?php foreach ($books as $index => $book): ?>
+                        <tr class="book-row" onclick="handleRowClick(event, <?= htmlspecialchars(json_encode($book), ENT_QUOTES, 'UTF-8') ?>)" style="cursor: pointer;" data-book-index="<?= $index ?>" data-book-id="<?= $book['id'] ?>">
                             <td class="ps-3">
                                 <div class="d-flex align-items-center">
                                     <div class="book-icon me-3">
@@ -238,8 +216,10 @@ function getGenreColor($genre) {
                                     </a>
                                     <button type="button" 
                                             class="btn btn-sm btn-outline-danger" 
-                                            onclick="confirmDelete('<?= esc($book['title']) ?>', <?= $book['id'] ?>)"
-                                            title="Delete Book">
+                                            onclick="console.log('Delete button clicked for book ID:', <?= $book['id'] ?>, 'Index:', <?= $index ?>, 'Title:', '<?= esc($book['title']) ?>'); confirmDelete('<?= esc($book['title']) ?>', <?= $book['id'] ?>)"
+                                            title="Delete Book"
+                                            data-book-id="<?= $book['id'] ?>"
+                                            data-book-title="<?= esc($book['title']) ?>">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -262,6 +242,8 @@ function getGenreColor($genre) {
             <?php endif; ?>
         </small>
     </div>
+    
+
 <?php endif; ?>
 
 <!-- Book Details Modal -->
@@ -571,9 +553,78 @@ function getGenreColor($genre) {
 </style>
 
 <script>
+function handleRowClick(event, book) {
+    // Check if the click was on a button or link
+    if (event.target.closest('button') || event.target.closest('a')) {
+        return; // Don't show book details if clicking on buttons/links
+    }
+    
+    // Show book details for other clicks
+    showBookDetails(book);
+}
+
+
+
+// Add event listeners for delete buttons as a backup
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Setting up delete button event listeners...');
+    
+    // Remove existing onclick attributes and add event listeners
+    document.querySelectorAll('button.btn-outline-danger').forEach(button => {
+        const bookId = button.getAttribute('data-book-id');
+        const bookTitle = button.getAttribute('data-book-title');
+        
+        if (bookId && bookTitle) {
+            console.log('Setting up event listener for book:', bookId, bookTitle);
+            
+            // Remove onclick attribute
+            button.removeAttribute('onclick');
+            
+            // Add event listener
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                console.log('Event listener triggered for book:', bookId, bookTitle);
+                confirmDelete(bookTitle, bookId);
+            });
+        }
+    });
+    
+    console.log('Delete button event listeners setup complete');
+});
+
 function confirmDelete(bookTitle, bookId) {
+    console.log('confirmDelete called with:', { bookTitle, bookId }); // Debug log
+    
     if (confirm(`Are you sure you want to delete "${bookTitle}"? This action cannot be undone.`)) {
-        window.location.href = `/books/delete/${bookId}`;
+        console.log('User confirmed deletion, creating form...'); // Debug log
+        
+        // Create a form to submit DELETE request
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/books/delete/${bookId}`;
+        
+        // Add CSRF token if available
+        const csrfToken = document.querySelector('meta[name="csrf_token"]')?.getAttribute('content');
+        if (csrfToken) {
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrf_token';
+            csrfInput.value = csrfToken;
+            form.appendChild(csrfInput);
+        }
+        
+        // Add method override for DELETE
+        const methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'DELETE';
+        form.appendChild(methodInput);
+        
+        console.log('Form created, submitting to:', form.action); // Debug log
+        document.body.appendChild(form);
+        form.submit();
+    } else {
+        console.log('User cancelled deletion'); // Debug log
     }
 }
 

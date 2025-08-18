@@ -21,4 +21,7 @@ tests/_support/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db 
+Thumbs.db
+
+# Project assets (not for public distribution)
+Project GIF.gif 
